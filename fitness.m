@@ -1,4 +1,4 @@
-function [mean_makespan,Zvalue,min_makespan,Z,pvals] = fitness(chroms,num_machine,num_job,num_op,total_op_num,time,operation_long,opmax,key)
+function [Z,pvals,machinecode] = fitness(chroms,num_machine,num_job,num_op,total_op_num,time,operation_long,opmax,key)
     sizepop = size(chroms,1);
     pvals=cell(1,sizepop);
     Z=cell(1,sizepop); % Z记录的是各个个体的makespan
@@ -16,9 +16,11 @@ function [mean_makespan,Zvalue,min_makespan,Z,pvals] = fitness(chroms,num_machin
             machine_time{m} = [0,0,0];
         end 
         pval=cell(2,total_op_num);  % 记录各工序开始和结束时间
+        machinecode = zeros(1,total_op_num);
         for i=1:total_op_num
             job_op(chrom(i)) = job_op(chrom(i)) + 1;
             m = chrom(key(chrom(i),job_op(chrom(i)))+total_op_num); % m代表选择的机器
+            machinecode(i) = m;
             % 机器时间大于工件时间
             if larger(machine{m},job{chrom(i)}) % 分成大于和小于等于两种情况
                 pval{1,i}=machine{m};
@@ -35,11 +37,12 @@ function [mean_makespan,Zvalue,min_makespan,Z,pvals] = fitness(chroms,num_machin
         end 
         machine_ = cellfun(@value,machine);
         [~,ind] = max(machine_);
-        Z{k} = machine{ind};
+        ZZ{k} = machine{ind};
+        machine_load=cellfun(@squ,machine_time);
+        Z2(k,:)=max(machine_load);
         pvals{k}=pval;
     end 
-    Z_ = cellfun(@value,Z);
-    [Zvalue,ind] = min(Z_);
-    mean_makespan = mean(Z_);
-    min_makespan=Z{ind};    
+    Z_ = cellfun(@value,ZZ);
+    Z1 = reshape(Z_, sizepop, 1);
+    Z = [Z1,Z2];
 end 

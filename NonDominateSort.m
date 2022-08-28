@@ -1,14 +1,10 @@
-function [FrontValue,MaxFront] = NonDominateSort(FunctionValue,Operation)
+function [FrontValue,MaxFront] = NonDominateSort(FunctionValue)
 % 进行非支配排序
 % 输入: FunctionValue, 待排序的种群(目标空间)，的目标函数,pop*dimesion规模的数组
 %       Operation,     可指定仅排序第一个面,排序前一半个体,或是排序所有的个体, 默认为排序所有的个体
 % 输出: FrontValue, 排序后的每个个体所在的前沿面编号, 未排序的个体前沿面编号为inf
 %       MaxFront,   排序的最大前面编号
-    if Operation == 1
-        Kind = 2; 
-    else
-        Kind = 1;  %√
-    end
+    Kind = 1;
 	[N,M] = size(FunctionValue);
     
     MaxFront = 0;
