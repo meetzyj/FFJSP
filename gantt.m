@@ -1,5 +1,6 @@
 load color
-[~,Z,pvals,machinecode] = fitness2(chrom_best,num_machine,num_job,num_op,total_op_num,time,operation_long,opmax,key);
+chrom_best = chroms(1,:);
+[Z,pvals,machinecode] = fitness(chrom_best,num_machine,num_job,num_op,total_op_num,time,operation_long,opmax,key);
 pval1 = pvals{1,1};
 figure(2);
 % set(gca, 'position', [0.03,0.10,0.95,0.85]);
